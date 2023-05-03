@@ -41,8 +41,11 @@ function stopButton() {
   }
 
 function resetButton() {
+  clearInterval(interval);
   timer.innerHTML ='0:0:0:0';
   $('#reset').prop('disabled',true);
+  $('#kaishi').prop('disabled',false);
+  $('#stop').prop('disabled',true);
 }
 
 
@@ -53,11 +56,13 @@ let goTimer = function() {
   let milli = Math.trunc(time%1000/100);
   let seconds = Math.trunc(time/1000);
   let minutes = Math.trunc(seconds/60);
+  let hour = Math.trunc(minutes/60);
   
   seconds = seconds - minutes*60;
+  minutes = minutes - hour*60;
   
-  let secondsLarge = Math.trunc(seconds/10);
-  let secondsSmall = seconds - secondsLarge*10;
+  // let secondsLarge = Math.trunc(seconds/10);
+  // let secondsSmall = seconds - secondsLarge*10;
   
-  timer.innerHTML =minutes + ':' + secondsLarge + ':' + secondsSmall + ':' + milli;
+  timer.innerHTML =hour + ':' + minutes + ':' + seconds + ':' + milli;
 };
