@@ -24,6 +24,8 @@ let start;
 let interval;
 let kaishi = document.getElementById('kaishi');
 let timer = document.getElementById('timer');
+let restart = 0;
+let now;
 
 function clickButton() {
   start = new Date();
@@ -36,6 +38,7 @@ function clickButton() {
   
 function stopButton() {
   clearInterval(interval);
+  restart += now.getTime() - start.getTime();
   $('#stop').prop('disabled',true);
   $('#kaishi').prop('disabled',false);
   }
@@ -43,6 +46,7 @@ function stopButton() {
 function resetButton() {
   clearInterval(interval);
   timer.innerHTML ='0:0:0:0';
+  restart = 0;
   $('#reset').prop('disabled',true);
   $('#kaishi').prop('disabled',false);
   $('#stop').prop('disabled',true);
@@ -50,9 +54,11 @@ function resetButton() {
 
 
 let goTimer = function() {
-  let now = new Date();
+  now = new Date();
   
-  let time = now.getTime() - start.getTime();
+  let time = now.getTime() - start.getTime() + restart;
+  //getTimeメソッドは１９７０年からの経過時間を表す
+  //現在の経過時間からクリックした時の経過時間を引いて時間の差を求めてる
   let milli = Math.trunc(time%1000/100);
   let seconds = Math.trunc(time/1000);
   let minutes = Math.trunc(seconds/60);
@@ -61,8 +67,6 @@ let goTimer = function() {
   seconds = seconds - minutes*60;
   minutes = minutes - hour*60;
   
-  // let secondsLarge = Math.trunc(seconds/10);
-  // let secondsSmall = seconds - secondsLarge*10;
   
   timer.innerHTML =hour + ':' + minutes + ':' + seconds + ':' + milli;
 };
